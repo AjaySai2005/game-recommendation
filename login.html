@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Game ChatBot</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Game ChatBot</h2>
+    <form method="POST">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+    </form>
+  </div>
+</body>
+</html>

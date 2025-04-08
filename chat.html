@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game ChatBot</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="chat-header">
+    <h2>Welcome, {{ user }}!</h2>
+    <a href="/logout" class="btn logout">Logout</a>
+  </div>
+  
+  <div class="chat-container" id="chat-container"></div>
+
+  <form id="chat-form">
+    <input type="text" id="user-input" placeholder="Ask for a game recommendation..." autocomplete="off" required />
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const chatForm = document.getElementById("chat-form");
+    const userInput = document.getElementById("user-input");
+    const chatContainer = document.getElementById("chat-container");
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendMessage("You", message);
+      userInput.value = "";
+
+      const response = await fetch("/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+      appendMessage("Bot", data.reply);
+    });
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement("div");
+      msg.className = "chat-message";
+      msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatContainer.appendChild(msg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  </script>
+</body>
+</html>
